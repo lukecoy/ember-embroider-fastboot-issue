@@ -1,4 +1,4 @@
-import EmberRouter from '@ember/routing/router';
+import EmberRouter from '@embroider/router';
 import config from './config/environment';
 
 export default class Router extends EmberRouter {
@@ -7,4 +7,6 @@ export default class Router extends EmberRouter {
 }
 
 Router.map(function() {
+  this.route('foo');
+  this.route('bar');
 });
