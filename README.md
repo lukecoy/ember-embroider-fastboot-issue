@@ -1,57 +1,30 @@
-# ember-embroider-fastboot-issue
+### Issue
+Embroider + Fastboot issue. In specific scenarios, Webpack is referencing `document.createElement` in Fastboot mode, which causes reference errors.
 
-This README outlines the details of collaborating on this Ember application.
-A short introduction of this app could easily go here.
+### Seeing the issue in this repo
+This repo reproduces the issue by enabling code splitting & adding a dependency on `ember-power-select` (Ive seen this issue with other repos as well though)
 
-## Prerequisites
+1.) `npm install && ember serve`
+2.) Go to `localhost:4200/bar` and see the exception (`ReferenceError: document is not defined`)
+3.) Oddly enough, if you do (this)[https://github.com/lukecoy/ember-embroider-fastboot-issue/blob/main/tests/integration/bar-component-test.js#L10], then everything works perfectly as expected. 
 
-You will need the following things properly installed on your computer.
 
-* [Git](https://git-scm.com/)
-* [Node.js](https://nodejs.org/) (with npm)
-* [Ember CLI](https://ember-cli.com/)
-* [Google Chrome](https://google.com/chrome/)
-
-## Installation
-
-* `git clone <repository-url>` this repository
-* `cd ember-embroider-fastboot-issue`
-* `npm install`
-
-## Running / Development
-
-* `ember serve`
-* Visit your app at [http://localhost:4200](http://localhost:4200).
-* Visit your tests at [http://localhost:4200/tests](http://localhost:4200/tests).
-
-### Code Generators
-
-Make use of the many generators for code, try `ember help generate` for more details
-
-### Running Tests
-
-* `ember test`
-* `ember test --server`
-
-### Linting
-
-* `npm run lint:hbs`
-* `npm run lint:js`
-* `npm run lint:js -- --fix`
-
-### Building
-
-* `ember build` (development)
-* `ember build --environment production` (production)
-
-### Deploying
-
-Specify what it takes to deploy your app.
-
-## Further Reading / Useful Links
-
-* [ember.js](https://emberjs.com/)
-* [ember-cli](https://ember-cli.com/)
-* Development Browser Extensions
-  * [ember inspector for chrome](https://chrome.google.com/webstore/detail/ember-inspector/bmdblncegkenkacieihfhpjfppoconhi)
-  * [ember inspector for firefox](https://addons.mozilla.org/en-US/firefox/addon/ember-inspector/)
+If it helps, here's the specific steps I did in this repo:
+0.) Add Embroider (`0.35.0`)
+1.) Add Fastboot (`ember-cli-fastboot 3.0.0-beta.2`)
+2.) Add dependency on an external repo (I use `ember-power-select ^2.x.x` here, but I've seen this same error with other repos as well)
+3.) Enable all the Embroider settings described (here)[https://github.com/embroider-build/embroider#options] to enable code splitting
+4.) Add 2 routes (I used `foo` & `bar`) and 2 corresponding components (I used `FooComponent` & `BarComponent`)
+5.) Add `{{#power-select ...}}` to `FooComponent` 
+6.) Add some test text to `BarComponent`
+7.) Add 2 integration tests for each component that just do the `await render(...)` in `foo-component-test.js` & `bar-component-test.js`
+8.) Observe the exception when visiting `/bar`:
+```
+ReferenceError: document is not defined
+    at Function.requireEnsure [as e] (/var/folders/jl/71dybhnj1zvcmkhj50vmjzbw0000gn/T/broccoli-8738901D5cd9H2gma/out-253-packager_runner_embroider_webpack/assets/chunk.5b7e63d4f16ef67e9215.js:116:27)
+    at Object.load (webpack:///./assets/ember-embroider-fastboot-issue.js?:104:60)
+    at PrivateRouter.name [as getRoute] (webpack:///./node_modules/@embroider/router/index.js?:87:23)
+    at UnresolvedRouteInfoByParam.fetchRoute (/var/folders/jl/71dybhnj1zvcmkhj50vmjzbw0000gn/T/broccoli-8738901D5cd9H2gma/out-253-packager_runner_embroider_webpack/assets/router_js.js:830:1)
+...
+```
+9.) If you do (this)[https://github.com/lukecoy/ember-embroider-fastboot-issue/blob/main/tests/integration/bar-component-test.js#L10], then everything works perfectly as expected.
