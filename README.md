@@ -24,11 +24,11 @@ This repo reproduces the issue [in this commit](https://github.com/lukecoy/ember
 
 3.) Enable all the Embroider settings described [here](https://github.com/embroider-build/embroider#options) to enable code splitting
 
-4.) Add 2 routes (I used `foo` & `bar`) and 2 corresponding components (I used `FooComponent` & `BarComponent`)
+4.) Add 2 routes (I used `foo` & `bar`) and 2 corresponding components in those routes (I used `FooComponent` & `BarComponent`)
 
-5.) Add `{{#power-select ...}}` to `FooComponent` 
+5.) Add `{{#power-select ...}}` to `BarComponent` 
 
-6.) Add some test text to `BarComponent`
+6.) Add some test text to `FooComponent` as a reference
 
 7.) *Important*: Add 2 integration tests for each component that just do the `await render(...)` in `foo-component-test.js` & `bar-component-test.js`
 
