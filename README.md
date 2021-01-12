@@ -10,8 +10,10 @@ This repo reproduces the issue by enabling code splitting & adding a dependency 
 
 3.) Oddly enough, if you do [this](https://github.com/lukecoy/ember-embroider-fastboot-issue/blob/main/tests/integration/bar-component-test.js#L10), then everything works perfectly as expected. 
 
+---
 
-### Notes:
+
+### Misc:
 *If it helps, here's the specific steps I did in this repo:*
 
 0.) Add Embroider (`0.35.0`)
