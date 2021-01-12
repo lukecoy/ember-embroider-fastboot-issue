@@ -2,7 +2,7 @@
 Embroider + Fastboot issue which throws exception. In specific scenarios, Webpack is referencing `document.createElement` in Fastboot, which causes reference errors. I didn't see this on Embroider `0.28.0`, but did when upgrading to `0.35.0`.
 
 ### Seeing the issue in this repo
-This repo reproduces the issue by enabling code splitting & adding a dependency on `ember-power-select` (Ive seen this issue with other dependencies as well though)
+This repo reproduces the issue [in this commit](https://github.com/lukecoy/ember-embroider-fastboot-issue/commit/38aaf28b9051a7277e1c1dcdcba5024b6e275158) by enabling code splitting & adding a dependency on `ember-power-select` (Ive seen this issue with other dependencies as well though)
 
 1.) `npm install && ember serve`
 
