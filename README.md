@@ -1,23 +1,35 @@
 ### Issue
-Embroider + Fastboot issue. In specific scenarios, Webpack is referencing `document.createElement` in Fastboot mode, which causes reference errors.
+Embroider + Fastboot issue which throws exception. In specific scenarios, Webpack is referencing `document.createElement` in Fastboot, which causes reference errors. I didn't see this on Embroider `0.28.0`, but did when upgrading to `0.35.0`.
 
 ### Seeing the issue in this repo
-This repo reproduces the issue by enabling code splitting & adding a dependency on `ember-power-select` (Ive seen this issue with other repos as well though)
+This repo reproduces the issue by enabling code splitting & adding a dependency on `ember-power-select` (Ive seen this issue with other dependencies as well though)
 
 1.) `npm install && ember serve`
+
 2.) Go to `localhost:4200/bar` and see the exception (`ReferenceError: document is not defined`)
-3.) Oddly enough, if you do (this)[https://github.com/lukecoy/ember-embroider-fastboot-issue/blob/main/tests/integration/bar-component-test.js#L10], then everything works perfectly as expected. 
+
+3.) Oddly enough, if you do [this](https://github.com/lukecoy/ember-embroider-fastboot-issue/blob/main/tests/integration/bar-component-test.js#L10), then everything works perfectly as expected. 
 
 
-If it helps, here's the specific steps I did in this repo:
+### Notes:
+*If it helps, here's the specific steps I did in this repo:*
+
 0.) Add Embroider (`0.35.0`)
+
 1.) Add Fastboot (`ember-cli-fastboot 3.0.0-beta.2`)
+
 2.) Add dependency on an external repo (I use `ember-power-select ^2.x.x` here, but I've seen this same error with other repos as well)
-3.) Enable all the Embroider settings described (here)[https://github.com/embroider-build/embroider#options] to enable code splitting
+
+3.) Enable all the Embroider settings described [here](https://github.com/embroider-build/embroider#options) to enable code splitting
+
 4.) Add 2 routes (I used `foo` & `bar`) and 2 corresponding components (I used `FooComponent` & `BarComponent`)
+
 5.) Add `{{#power-select ...}}` to `FooComponent` 
+
 6.) Add some test text to `BarComponent`
-7.) Add 2 integration tests for each component that just do the `await render(...)` in `foo-component-test.js` & `bar-component-test.js`
+
+7.) *Important*: Add 2 integration tests for each component that just do the `await render(...)` in `foo-component-test.js` & `bar-component-test.js`
+
 8.) Observe the exception when visiting `/bar`:
 ```
 ReferenceError: document is not defined
@@ -27,4 +39,4 @@ ReferenceError: document is not defined
     at UnresolvedRouteInfoByParam.fetchRoute (/var/folders/jl/71dybhnj1zvcmkhj50vmjzbw0000gn/T/broccoli-8738901D5cd9H2gma/out-253-packager_runner_embroider_webpack/assets/router_js.js:830:1)
 ...
 ```
-9.) If you do (this)[https://github.com/lukecoy/ember-embroider-fastboot-issue/blob/main/tests/integration/bar-component-test.js#L10], then everything works perfectly as expected.
+9.) Again, if you edit the test to do [this](https://github.com/lukecoy/ember-embroider-fastboot-issue/blob/main/tests/integration/bar-component-test.js#L10), then everything works perfectly as expected.
